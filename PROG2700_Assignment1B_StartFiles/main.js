@@ -38,7 +38,17 @@ function convertPhoneWord(phoneWord) {
         'W': '9', 'X': '9', 'Y': '9', 'Z': '9'
 
     };
-    
+     let phoneNum = "";
+
+     for (var i = 0; i < phoneWord.length; i++) {
+        var character = phoneWord[i].toUpperCase();
+        if (isDigit(character)) {
+            phoneNum += character;
+        } else if (isLetter(character)) {
+            phoneNum += keypad[character];
+        }
+    }
+    return phoneNum;
 
 }
 

@@ -27,11 +27,11 @@ var buttons = ["abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"] //DO NOT MODIF
 function convertPhoneWord(phoneWord) {
 
     //Enter your code in this function body
-    if (phoneWord == null) {
+    if (phoneWord == null) { //check if null or undefined
         return '';
     }
 
-    let keypad = {
+    let keypad = { //keypad mapping
         'A': '2', 'B': '2', 'C': '2',
         'D': '3', 'E': '3', 'F': '3',
         'G': '4', 'H': '4', 'I': '4',
@@ -44,13 +44,13 @@ function convertPhoneWord(phoneWord) {
     };
      let phoneNum = "";
 
-    for (let i = 0; i < phoneWord.length; i++) {
-       let character = phoneWord[i].toUpperCase();
-        if (isDigit(character)) {
+    for (let i = 0; i < phoneWord.length; i++) { // go over inputted characters
+       let character = phoneWord[i].toUpperCase();// convert characters to uppercase
+        if (isDigit(character)) {// check if it is digit
             phoneNum += character;
-        } else if (isLetter(character)) {
+        } else if (isLetter(character)) {// if not digit it letter
             phoneNum += keypad[character];
-        }
+        } //ignores anything else
     }
     return phoneNum;
 

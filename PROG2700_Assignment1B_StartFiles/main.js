@@ -27,6 +27,10 @@ var buttons = ["abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"] //DO NOT MODIF
 function convertPhoneWord(phoneWord) {
 
     //Enter your code in this function body
+    if (phoneWord == null) {
+        return '';
+    }
+
     let keypad = {
         'A': '2', 'B': '2', 'C': '2',
         'D': '3', 'E': '3', 'F': '3',
@@ -40,8 +44,8 @@ function convertPhoneWord(phoneWord) {
     };
      let phoneNum = "";
 
-     for (var i = 0; i < phoneWord.length; i++) {
-        var character = phoneWord[i].toUpperCase();
+    for (let i = 0; i < phoneWord.length; i++) {
+       let character = phoneWord[i].toUpperCase();
         if (isDigit(character)) {
             phoneNum += character;
         } else if (isLetter(character)) {

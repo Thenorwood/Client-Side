@@ -5,10 +5,7 @@
     function getNewDeck() {
         fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
         .then(response => {
-            if (!response.ok) {
-                throw new Error('networkerror?');
-              }
-              return response.json()
+            return response.json()
              }) //change response to json
         .then(data =>{
             deckId = data.deck_id;
@@ -18,13 +15,10 @@
         .catch(error => console.error('Error fetching cards:', error));
     }
 
-    function drawCards(deckId, count) {
+    function drawCards(deckId) {
         fetch(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=5`)
         .then(response => {
-            if (!response.ok) {
-              throw new Error('Networkerror again?');
-            }
-            return response.json();
+           return response.json();
           })
         .then(data => {
           displayCards(data.cards);
@@ -39,8 +33,7 @@
         cards.forEach(card => {
             const imgElement = document.createElement('img');
             imgElement.src = card.image;
-            imgElement.alt = `The ${card.value} of ${card.suit}`;
-            imgElement.classList.add("card-image");
+            //imgElement.alt = `The ${card.value} of ${card.suit}`; ---- added because cards not displaying wanted to see if it was working
             cardsContainer.appendChild(imgElement);
         });
     }

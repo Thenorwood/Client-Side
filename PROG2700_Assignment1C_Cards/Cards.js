@@ -21,10 +21,19 @@
         })
         .catch(error => console.error('Error drawing cards:', error));
     }
+
+    function displayCards(cards) {
+        const cardsContainer = document.getElementById('cards-container');
+        cardsContainer.innerHTML = "";
+
+        cards.map(card => {
+            const ingElement = document.createElement('img');
+            imgElement.src = cards.image;
+            cardsContainer.appendChild(ingElement);
+        });
+    }
   
     getNewDeck();
-
-    console.log(json);
   
 })();
     //let deckID;

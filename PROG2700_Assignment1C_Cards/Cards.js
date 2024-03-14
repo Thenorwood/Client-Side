@@ -37,9 +37,9 @@
         cardsContainer.innerHTML = "";
 
         cards.map(card => {
-            const ingElement = document.createElement('img');
+            const imgElement = document.createElement('img');
             imgElement.src = cards.image;
-            cardsContainer.appendChild(ingElement);
+            cardsContainer.appendChild(imgElement);
         });
     }
   

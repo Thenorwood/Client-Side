@@ -36,9 +36,11 @@
         const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = "";
 
-        cards.map(card => {
+        cards.forEach(card => {
             const imgElement = document.createElement('img');
-            imgElement.src = cards.image;
+            imgElement.src = card.image;
+            imgElement.alt = `The ${card.value} of ${card.suit}`;
+            imgElement.classList.add("card-image");
             cardsContainer.appendChild(imgElement);
         });
     }

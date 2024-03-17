@@ -18,9 +18,14 @@ body {
 #cards-container img {
 
     margin: 5px;
-    transition: transform 0.3s ease-in-out;
   }
   
-  #cards-container img:hover {
-    transform: translateY(-10px);
-  }
+#hand-rank {
+  color:white;
+  margin-bottom: 120px;
+  margin-top: 150px;
+  font-size: 50px;
+  font-weight: bold;
+  justify-content: center; 
+  display: flex;
+}

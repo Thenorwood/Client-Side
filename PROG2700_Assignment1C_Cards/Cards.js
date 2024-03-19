@@ -1,40 +1,34 @@
-(function() { //creates an IIFE
-    function initializeDeckAndDrawCards() {//function called 'initializeDeckAndDrawCards' responsible for creating new deck and drawing cards.
-      fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")//Initiates a network request to the Deck of Cards API to create a new shuffled deck of cards.
-        .then(response => response.json())//Takes the first promise response, which is a Response object, and parses it as JSON.
-        .then(data => fetch(`https://deckofcardsapi.com/api/deck/${data.deck_id}/draw/?count=5`))//Uses the 'deck_id' obtained from the first API call to make a second API call to draw 5 cards from the deck.
-        .then(response => response.json())// Takes the second promise response from drawing cards and parses it as JSON.
+(function() { 
+    function initializeDeckAndDrawCards() {
+      fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
+        .then(response => response.json())
+        .then(data => fetch(`https://deckofcardsapi.com/api/deck/${data.deck_id}/draw/?count=5`))
+        .then(response => response.json())
         .then(data => {
-          displayCards(data.cards);//Calls the 'displayCards' function to display the cards on the webpage.
-          return data.cards;//Returns the array of drawn card objects to be used by the next promise in the chain.
+          displayCards(data.cards);
+          const handRank = evaluateHand(data.cards);
+            console.log(`The best hand is: ${handRank}`);
+          displayHandRank(handRank);
         })
-        .then(cards => {
-          const handRank = evaluateHand(cards);//Evaluates the hand by calling the 'evaluateHand' function with the drawn cards.
-            console.log(`The best hand is: ${handRank}`);//displays this message in console
-          displayHandRank(handRank);//Calls the 'displayHandRank' function to display the evaluated hand rank on the webpage.
-        })
-        .catch(error => console.error('Error:', error));//Catches and logs any errors that may occur during any of the above async operations.
+        .catch(error => console.error('Error:', error));
     }
-    /*
-    This function forms a promise chain that clearly outlines the flow of asynchronous 
-    operations: from deck creation, card drawing, display to hand evaluation, and error 
-    handling. Each .then() waits for the previous asynchronous operation to complete 
-    before executing its callback function, ensuring that the operations occur in the correct sequence.
+    /* deck creation, card drawing, display to hand evaluation, and error 
+    handling.  .then() waits for the previous asynchronous operation to complete 
     */
 
     function displayCards(cards) {
       const cardsContainer = document.getElementById('cards-container');
-      cardsContainer.innerHTML = '';
+      cardsContainer.innerHTML = '';//empty 
       cards.forEach(card => {
         const imgElement = document.createElement('img');
         imgElement.src = card.image;
-        //imgElement.alt = `The ${card.value} of ${card.suit}`;
+        //imgElement.alt = `The ${card.value} of ${card.suit}`; error checking
         cardsContainer.appendChild(imgElement);
       });
     }
     /*
-    This function is responsible for visually displaying the cards on the web page. 
-    It dynamically creates image elements for each card and inserts them into the specified container in the DOM.
+    responsible for visually displaying the cards on  web page. 
+    It creates image elements for each card and inserts them into the specified container.
     */
   
     function displayHandRank(handRank) {
@@ -42,8 +36,8 @@
       rankContainer.textContent = handRank;
     }
      /*
-    This function is straightforward; it's tasked with taking the evaluated hand rank as a string and displaying it in
-     the designated area on the web page. When called, it ensures that users can see what hand they have been dealt.
+    This function takes the evaluated hand rank as a string and displaying it in
+    designated area on the web page. When called, it ensures that users can see what hand they have been dealt.
     */ 
   
     function cardValue(card) {
@@ -54,37 +48,38 @@
       return values[card.value];
     }
     /*
-    The cardValue function translates the face value of a card (which may be a number or a 
-    face card such as Jack, Queen, etc.) into a corresponding numerical value.
-    This function is essential for evaluating hands because it provides a way to compare card 
-    values easily. For example, knowing that a Queen is numerically higher than a Jack (12 > 11) 
-    is crucial for determining the ranking of poker hands. The Ace is given the highest value (14) 
-    assuming it's always high in this context.
+    The cardValue function translates the face value of a card into a number value.
+    essential for evaluating hands because it provides a way to compare card 
+    values. that way it can more easily calculate high cards ansd whichcard is more valuable than the others. i made aces high
     */
   
     function sortCardsByValue(cards) {
       return cards.slice().sort((a, b) => cardValue(a) - cardValue(b));
     }
     /*
-    The sortCardsByValue function sorts an array of card objects based on the numerical value of the cards,
-    from lowest to highest
-    This sorted array is crucial for evaluating certain poker hands like Straights, where the order of cards matters. By 
-    sorting the cards first, the rest of your hand evaluation functions can work with an ordered set, which simplifies their logic.
+    The  function that sorts an array of cards based on the numerical value of the cards,
+    from lowest to highest. important to figure out straights and such
+    
     */
   
     function countValues(cards) {
-      return cards.reduce((acc, card) => {
-        const value = cardValue(card);
-        acc[value] = (acc[value] || 0) + 1;
-        return acc;
-      }, {});
+      let counts = {}; 
+      for (var i = 0; i < cards.length; i++) {
+        var card = cards[i]; 
+        var value = cardValue(card); 
+        if (counts[value]) {
+          counts[value] += 1;
+        } else {
+          counts[value] = 1;
+        }
+      }
+    return counts;
     }
+    
     /*
-    The countValues function counts the occurrences of each card value in an array of cards.
-    This function is used to tally the number of times each card value appears in the hand, which is critical
-    information when determining poker hands like Pairs, Three of a Kinds, and Four of a Kinds. The returned 
-    object will have keys that correspond to card values and values that correspond to how many times those 
-    card values appear in the hand.
+    The countValues function counts the occurrences of each card value 
+    This function is used to tally the number of times each card value appears in the hand for
+    poker hands like Pairs, Three of a Kinds, and Four of a Kinds.
     */
   
     function isFlush(cards) {
@@ -112,7 +107,8 @@
     }
   
     function isRoyalFlush(cards) {
-      return isStraight(cards) && isFlush(cards) && cardValue(cards[0]) === 10;
+      return isStraight(cards) && isFlush(cards) && cardValue(cards[0]) === 10;// calle dif the result is both straight and flush 
+      //and has the highest hand values possible in a straight
     }
   
     function isStraightFlush(cards) {

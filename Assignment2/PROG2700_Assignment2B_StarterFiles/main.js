@@ -95,24 +95,24 @@
         //10 - Create a funtion called capitalizeTheFriends that transforms the episode JSON data by capitalizing the words Joey, Chandler, Monica, Rachel, Phoebe, and Ross in both 
         //the name and summary of the episodes.
         function capitalizeTheFriends(json) {
-            const names = ["Joey", "Chandler", "Monica", "Rachel", "Phoebe", "Ross"];
+            const names = ["Joey", "Chandler", "Monica", "Rachel", "Phoebe", "Ross"];// array 'names' that functions will look for occurences of in the objects
             return json._embedded.episodes.map(episode => {
                 
-                const newName = names.reduce((acc, name) => {
-                    const regex = new RegExp(name, 'gi');
-                    return acc.replace(regex, name.toUpperCase());
+                const newName = names.reduce((acc, name) => {//go through array & apples following function to result
+                    const regex = new RegExp(name, 'gi'); //'gi' = global and case-insensitive
+                    return acc.replace(regex, name.toUpperCase());// replaces occurences of names with the capitalized versions & store sin new array
                 }, episode.name);
         
-                const newSummary = names.reduce((acc, name) => {
+                const newSummary = names.reduce((acc, name) => {//same idea as above but apples to summary array
                     const regex = new RegExp(name, 'gi');
                     return acc.replace(regex, name.toUpperCase());
                 }, episode.summary);
         
                 
                 return {
-                    ...episode,
-                    name: newName,
-                    summary: newSummary
+                    ...episode,//makes new object trhat copies all contents from current "episode" object
+                    name: newName,//replace name property with newname
+                    summary: newSummary//replace newName property blabla
                 };
             });
         }
